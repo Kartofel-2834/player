@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>My player</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Exo+2:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/file?path=css/style.css">
+  </head>
+  <body>
+
+    <div id="app">
+      <player
+        :track="track"
+        :playbuttonclick="playPause"
+        :previousbuttonclick="previousTrack"
+        :nextbuttonclick="nextTrack"
+        :changecurrenttime="changeCurrentTime"
+        :timelinecontrol_on="timeLineControlOn"
+        :timelinecontrol_off="timeLineControlOff"
+        :repeatbuttonclick="repeatButtonEvent"
+        :randombuttonclick="changeRandomMode"
+        :volumerangeinput="changeVolume"
+        :mutebuttonclick="changeMuteMode"
+      ></player>
+
+      <track-list
+        :currenttrack="track"
+        :tracks="myTracks"
+        :linkclick="changeTrack"
+        :activelinkclick="playPause"
+      ></track-list>
+    </div>
+
+
+    <script src="https://unpkg.com/vue@next"></script>
+    <script type="module" src="/file?path=js/script.js"></script>
+  </body>
+</html>
