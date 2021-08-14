@@ -91,7 +91,7 @@ const App = {
     },
 
     changeVolume( event ){
-      this.track.volume = event.target.value
+      this.track.volume = Number( event.target.value )
       this.song.volume = event.target.value / 100
     },
 
@@ -151,7 +151,6 @@ const App = {
       this.track.progress = this.song.currentTime / ( this.song.duration / 100 )
     }
   }
-
 
 }
 

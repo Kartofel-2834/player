@@ -9,7 +9,9 @@ const TrackLink = {
   },
 
   methods: {
-    clickAppended(){
+    clickAppended( event ){
+      if( event.target.id == 'trackMenuOpen' ){ return }
+
       if( this.currenttrack._id == this.track._id ){
         this.activelinkclick()
       }
@@ -37,7 +39,6 @@ const TrackLink = {
         this.currenttrack.paused ? "pause_ball" : "play_ball"
       ]
     },
-
   },
 
   components: {
@@ -54,8 +55,13 @@ const TrackLink = {
         :authorclasses="[]"
       ></track-info>
 
-      <div>
-        <div class="track_menu_open_button"></div>
+      <div style="margin-right: 1em">
+        <div id="trackMenuOpen" :class="currenttrack._id == track._id ? 'hide' : ['track_menu_open_button', 'button']">
+            <div class="menu_button_ball"></div>
+            <div class="menu_button_ball"></div>
+            <div class="menu_button_ball"></div>
+        </div>
+
         <div :class="ballCssClasses"></div>
       </div>
     </li>

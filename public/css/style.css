@@ -277,7 +277,6 @@ li{}
   border-radius: 100%;
   width: 1.2em;
   height: 1.2em;
-  margin-right: 1em;
   background-color: #071c2f;
   transition: 0.15s linear;
 }
@@ -289,6 +288,29 @@ li{}
 .pause_ball{
   border-radius: 0%;
 }
+
+.track_menu_open_button{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  min-width: 1.2em;
+  min-height: 1.2em;
+}
+
+.track_menu_open_button::before{
+  width: 1.2em;
+  height: 1.2em;
+  padding: 0.5em;
+  margin-top: -0.5em;
+}
+
+.menu_button_ball{
+  width: 0.3em;
+  height: 0.3em;
+  background-color: #d2cfa6;
+}
+
 
 
 .range_input_inner{
