@@ -1,5 +1,6 @@
 import PlayerComponent from '/file?path=js/player/player-main.js'
 import TrackList from '/file?path=js/trackList/track-list.js'
+import Menus from '/file?path=js/side-menu.js'
 
 const App = {
   data(){
@@ -30,6 +31,7 @@ const App = {
   },
 
   components: {
+    "side-main-menu": Menus.main,
     "player": PlayerComponent,
     "track-list": TrackList,
   },

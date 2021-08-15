@@ -56,7 +56,10 @@ const TrackLink = {
       ></track-info>
 
       <div style="margin-right: 1em">
-        <div id="trackMenuOpen" :class="currenttrack._id == track._id ? 'hide' : ['track_menu_open_button', 'button']">
+        <div
+          id="trackMenuOpen"
+          :class="currenttrack._id == track._id ? 'hide' : ['track_menu_open_button', 'button']"
+        >
             <div class="menu_button_ball"></div>
             <div class="menu_button_ball"></div>
             <div class="menu_button_ball"></div>

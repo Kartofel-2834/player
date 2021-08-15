@@ -11,6 +11,8 @@
   <body>
 
     <div id="app">
+
+
       <player
         :track="track"
         :playbuttonclick="playPause"
@@ -24,6 +26,8 @@
         :volumerangeinput="changeVolume"
         :mutebuttonclick="changeMuteMode"
       ></player>
+
+      <side-main-menu></side-main-menu>
 
       <track-list
         :currenttrack="track"

@@ -9,6 +9,20 @@
   100% { transform: scale(1) }
 }
 
+@keyframes dark_menu_hide {
+  0%{ opacity: 0.35 }
+
+  100%{ opacity: 0 }
+}
+
+@keyframes dark_menu_show {
+  0%{ opacity: 0 }
+
+  100% { opacity: 0.35; z-index: 90000 }
+}
+
+
+
 *{ margin: 0 }
 
 body{
@@ -17,7 +31,6 @@ body{
   color:white;
   font-family: 'Exo 2', sans-serif;
 }
-
 
 /*
 #F2EEA7 - yellow
@@ -40,7 +53,19 @@ body{
 
 .hide{ display: none }
 
-.hide_opacity{ opacity: 0 }
+.hide_opacity{ opacity: 0 !important }
+
+.hide_side_menu{ transform: translateX(-100%) }
+
+.hide_dark_menu_part{
+  animation: dark_menu_hide 0.25s 1 linear;
+  animation-fill-mode: forwards;
+}
+
+.show_dark_menu_part{
+  animation: dark_menu_show 0.25s 1 linear;
+  animation-fill-mode: forwards;
+}
 
 .row{ display: flex }
 
@@ -73,6 +98,41 @@ body{
   height: 100vh;
   width: 100%;
 }
+
+.menu{
+  z-index: 100000;
+  position: fixed;
+  height: 100%;
+  background-color: #12293d;
+  width: 30%;
+  transition: 0.25s linear;
+  display: flex;
+  flex-direction: column;
+}
+
+.menu_dark_back{
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  background-color: black;
+  z-index: -100;
+  opacity: 0;
+  transition: 0.25s linear;
+}
+
+.menu_link{
+  width: -webkit-fill-available;
+  padding: 1.5rem;
+  font-size: 1.5em;
+  cursor: pointer;
+  user-select: none;
+  transition: 0.15s linear;
+}
+
+.menu_link:hover{
+  background-color: #1a3752;
+}
+
 
 .player{
   padding: 1.3em;
