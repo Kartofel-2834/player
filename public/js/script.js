@@ -126,6 +126,17 @@ const App = {
 
       this.track.paused = this.song.paused
     },
+
+    addNewTracks( e ){
+      let files = Array.from(e.target.files)
+      let formData = new FormData()
+      
+      files = files.filter( f => /.mp3/.test( f.name ) && f.type == 'audio/mpeg')
+
+      for( let f of files ){ formData.append( 'newTracks', f ) }
+
+      postRequest('/addTracks', formData)
+    },
   },
 
 
@@ -172,6 +183,17 @@ function mixArray( arr ){
 
   return ans
 }
+
+async function postRequest (url, reqBody){
+  let fetchResponse = await fetch(url, {
+    method: 'POST',
+    body: reqBody,
+  });
+
+  return await fetchResponse.text();
+}
+
+
 
 let app = Vue.createApp(App)
 let vm = app.mount("#app")

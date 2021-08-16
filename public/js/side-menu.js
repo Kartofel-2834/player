@@ -1,4 +1,8 @@
 const MainMenu = {
+  props: {
+    addtracklinkclick: { type: Function, default: null },
+  },
+
   data(){ return {
     opened: false,
     darkBackClasses: [ 'menu_dark_back' ],
@@ -29,9 +33,10 @@ const MainMenu = {
     ]"></div>
 
     <div :class="[ 'menu', { 'hide_side_menu': !opened } ]">
+
       <label>
         <div class="menu_link">Add tracks</div>
-        <input type="file" class="hide" accept=".mp3" multiple="true">
+        <input type="file" class="hide" accept=".mp3" multiple="true" @change="addtracklinkclick">
       </label>
 
     </div>

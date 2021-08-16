@@ -27,7 +27,9 @@
         :mutebuttonclick="changeMuteMode"
       ></player>
 
-      <side-main-menu></side-main-menu>
+      <side-main-menu
+        :addtracklinkclick="addNewTracks"
+      ></side-main-menu>
 
       <track-list
         :currenttrack="track"
