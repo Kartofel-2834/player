@@ -2,5 +2,7 @@
 /public/icons
 /public/tracks
 /public/posters
+/public/trackBuffer
+/router/FFmpeg
 *.json
 staticShit.js
