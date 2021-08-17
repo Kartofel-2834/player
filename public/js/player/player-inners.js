@@ -6,6 +6,7 @@ const PlayerTrackInfoComponent = {
     track: { type: Object, default: null },
     posterclasses: { type: Array, default: ["poster"] },
     titleclasses: { type: Array, default: ["player_text"] },
+    innerClasses: { type: Array, default: [ 'track_info', 'row', 'align', 'third_of_player' ] },
     authorclasses: { type: Array, default: ["player_text"] },
     marquee_active: { type: Boolean, default: true },
   },
@@ -19,12 +20,24 @@ const PlayerTrackInfoComponent = {
   },
 
   computed: {
-    posterSrc(){ return `/file?path=posters/${ this.track._id }.jpg` },
+    posterSrc(){
+      if( this.track.poster ){
+        return `/file?path=posters/${ this.track._id }.jpg`
+      }
+      else {
+        return `/file?path=posters/0.png`
+      }
+    },
+
+    posterCssClasses(){
+      if( this.track.poster ){ return this.posterclasses }
+      else{ return Array.from(this.posterclasses).concat(['null_poster']) }
+    }
   },
 
   template: `
-    <div v-if="track" class="track_info row align third_of_player">
-      <img :class="posterclasses" :src="posterSrc">
+    <div v-if="track" :class="innerClasses">
+      <img :class="posterCssClasses" :src="posterSrc">
 
       <div class="track_title_and_author">
         <h1 :class="textClasses('title')" >

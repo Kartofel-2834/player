@@ -153,8 +153,9 @@ body{
 }
 
 .poster{
-  width: 5rem;
-  height: 5rem;
+  background-color: #26384f;
+  width: 75px;
+  height: 75px;
 }
 
 .track_title_and_author{
@@ -326,9 +327,10 @@ li{}
 
 }
 
-.link_poster{
-  width: 75px;
-  height: 75px;
+.null_poster{
+  width: 40px;
+  height: 40px;
+  padding: 17.5px;
 }
 
 .poster_shadow{ box-shadow: 0px 0px 17px 2px rgb(34 60 80 / 20%) }

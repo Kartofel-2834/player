@@ -30,7 +30,7 @@ const TrackLink = {
     },
 
     posterCssClasses(){
-      return [ 'link_poster', this.currenttrack._id == this.track._id ? 'poster_shadow' : '' ]
+      return [ 'poster', this.currenttrack._id == this.track._id ? 'poster_shadow' : '' ]
     },
 
     ballCssClasses(){
@@ -53,6 +53,7 @@ const TrackLink = {
         :marquee_active="false"
         :titleclasses="['link_title_text']"
         :authorclasses="[]"
+        :innerClasses="[ 'track_info', 'row', 'align' ]"
       ></track-info>
 
       <div style="margin-right: 1em">
