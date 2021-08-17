@@ -16,6 +16,7 @@ const App = {
         title: null,
         author: null,
         progress: 0,
+        poster: false,
         paused: true,
         repeat: false,
         randomModeActive: false,
@@ -120,6 +121,7 @@ const App = {
       this.track._id = newTrack._id
       this.track.title = newTrack.title
       this.track.author = newTrack.author
+      this.track.poster = newTrack.poster
       this.track.progress = 0
 
       if( !this.track.paused ){ this.song.play() }
@@ -129,9 +131,12 @@ const App = {
 
     addNewTracks( e ){
       let files = Array.from(e.target.files)
-      let formData = new FormData()
-      
+
       files = files.filter( f => /.mp3/.test( f.name ) && f.type == 'audio/mpeg')
+
+      if( files.length == 0 ){ console.log("pipka");return }
+
+      let formData = new FormData()
 
       for( let f of files ){ formData.append( 'newTracks', f ) }
 

@@ -54,8 +54,10 @@ router.get("/myTracks", async (req, res)=>{
   res.json( myTracks )
 })
 
-router.post("/addTracks", multer({ storage: storage }).array('newTracks'), async (req, res)=>{
-  const files = req.files
+router.post("/addTracks", upload, async (req, res)=>{
+  if ( !req.files || req.files.length == 0){
+    res.sendStatus(404); return
+  }
 
   for( let file of req.files ){
 
@@ -69,26 +71,29 @@ router.post("/addTracks", multer({ storage: storage }).array('newTracks'), async
       try {
         newTrack = await tracksData.create( newTrack )
 
-        let user = await usersData.findOne( { name: "Kartofel_2834" } )
-        user.tracks.unshift( newTrack._id )
-
         await usersData.findOneAndUpdate( { name: "Kartofel_2834" }, {
-          $set: { tracks: user.tracks }
+          $push: { tracks: String( newTrack._id ) }
         })
       } catch (e) { throw e }
 
-      fs.readFile( file.path, (err, data)=>{
-        if( err ){ throw err }
+      let trackPath = path.join(staticShit.publicPath, 'tracks', `${newTrack._id}.mp3`)
 
-        let trackPath = path.join(staticShit.publicPath, 'tracks', `${newTrack._id}.mp3`)
-        fs.writeFile( trackPath, data, ()=>{console.log(2)} )
-      })
-
+      await overwriteFile( file.path, trackPath )
     })
 
   }
 
   res.sendStatus(200)
 })
+
+async function overwriteFile(filePath, newPath){
+  let file = fs.readFileSync( filePath )
+
+  if( !file ){ return }
+
+  await fs.writeFile( newPath, file, (err)=>{ if( err ){ throw err } })
+  await fs.unlink( filePath, (err)=>{ if(err){ throw err } } )
+}
+
 
 module.exports = router
