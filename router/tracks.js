@@ -51,7 +51,7 @@ router.get("/myTracks", async (req, res)=>{
     myTracks = await tracksData.find( { _id: { $in: user.tracks }  } )
   } catch (e) { throw e }
 
-  res.json( myTracks )
+  res.json( myTracks.reverse() )
 })
 
 router.post("/addTracks", upload, async (req, res)=>{
@@ -92,8 +92,7 @@ async function overwriteFile(filePath, newPath){
   if( !file ){ return }
 
   await fs.writeFile( newPath, file, (err)=>{ if( err ){ throw err } })
-  await fs.unlink( filePath, (err)=>{ if(err){ throw err } } )
+  await fs.unlink( filePath, (err)=>{ if(err){ throw err } console.log(222) } )
 }
-
 
 module.exports = router

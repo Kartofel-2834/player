@@ -25,6 +25,26 @@
 
 *{ margin: 0 }
 
+*::-webkit-scrollbar{
+  -webkit-appearance: none;
+  width: 12px;
+  cursor: pointer;
+}
+
+*::-webkit-scrollbar{
+  cursor: pointer;
+}
+
+*::-webkit-scrollbar-thumb {
+  -webkit-appearance: none;
+  border-radius: 10px;
+  background-color: #eae7a3cf;
+}
+
+*::-webkit-scrollbar-track-piece{
+  background-color: #ffffff4a;
+}
+
 body{
   margin: 0;
   background-color: #26384f;
@@ -121,8 +141,9 @@ body{
 }
 
 .menu_link{
+  font-weight: bold;
   width: -webkit-fill-available;
-  padding: 1.5rem;
+  padding: 1rem 1.5rem;
   font-size: 1.5em;
   cursor: pointer;
   user-select: none;
@@ -132,6 +153,14 @@ body{
 .menu_link:hover{
   background-color: #1a3752;
 }
+
+#plusButton{
+  background: no-repeat center/45%;
+  background-image: url("/file?path=icons\\plus.svg");
+  transition: 0.15s linear;
+}
+
+#plusButton::before{ display: none }
 
 
 .player{
@@ -203,6 +232,8 @@ h2{
   background-color: inherit;
   min-width: 3rem;
   min-height: 3rem;
+  max-width: 3rem;
+  max-height: 3rem;
 }
 
 .button::before{

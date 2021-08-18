@@ -129,7 +129,7 @@ const App = {
       this.track.paused = this.song.paused
     },
 
-    addNewTracks( e ){
+    async addNewTracks( e ){
       let files = Array.from(e.target.files)
 
       files = files.filter( f => /.mp3/.test( f.name ) && f.type == 'audio/mpeg')
@@ -140,7 +140,10 @@ const App = {
 
       for( let f of files ){ formData.append( 'newTracks', f ) }
 
-      postRequest('/addTracks', formData)
+      let answer = await postRequest('/addTracks', formData)
+
+      
+      alert(answer)
     },
   },
 
