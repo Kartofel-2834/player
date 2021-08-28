@@ -1,11 +1,35 @@
+const MenuLink = {
+  props: {
+    text: { type: String, default: 'Text' },
+    iconid: { type: String, default: null },
+  },
+
+  data(){
+    return { hover: false }
+  },
+
+  methods: {
+    changeHoverMode(){ this.hover = !this.hover }
+  },
+
+  template: `
+    <div class="menu_link space_between align" @mouseover="changeHoverMode" @mouseout="changeHoverMode">
+      <div>{{ text }}</div>
+      <img :class="[ 'button', { 'hide_opacity': !hover }]" :id="iconid" src="">
+    </div>
+  `
+}
+
+
+
 const MainMenu = {
   props: {
     addtracklinkclick: { type: Function, default: null },
+    deletetracklinkclick: { type: Function, default: null },
   },
 
   data(){ return {
     opened: false,
-    linkHoverInfo: [ false ],
     darkBackClasses: [ 'menu_dark_back' ],
   } },
 
@@ -14,11 +38,7 @@ const MainMenu = {
 
     close(){ this.opened = false },
 
-    addTrackChange(){ this.addtracklinkclick(); this.close() },
-
-    changeHoverMode( linkIndex ){
-      this.linkHoverInfo[ linkIndex ] = !this.linkHoverInfo[ linkIndex ]
-    }
+    menuLinkClickEvent( method, e ){ this[ method ](e); this.close() }
   },
 
   created(){
@@ -31,6 +51,9 @@ const MainMenu = {
     }
   },
 
+  components:{
+    "menu-link": MenuLink,
+  },
 
   template: `
     <div @click="close" :class="[
@@ -43,18 +66,23 @@ const MainMenu = {
 
     <div :class="[ 'menu', { 'hide_side_menu': !opened } ]">
 
-      <label class="">
-        <div class="menu_link space_between align" @mouseover="changeHoverMode(0)" @mouseout="changeHoverMode(0)">
-          <div>Add tracks</div>
-          <img :class="[ 'button', { 'hide_opacity': !linkHoverInfo[0] }]" id="plusButton" src="">
-        </div>
-        <input type="file" class="hide" accept=".mp3" multiple="true" @change="addTrackChange">
+      <label>
+        <menu-link text="Add Tracks" iconid="plusButton"></menu-link>
+        <input type="file"
+          class="hide" accept=".mp3" multiple="true"
+          @change="menuLinkClickEvent( 'addtracklinkclick', $event )"
+        >
       </label>
+
+      <menu-link
+        text="Delete tracks"
+        iconid="trashButton"
+        @click="menuLinkClickEvent( 'deletetracklinkclick', $event )"
+      ></menu-link>
 
     </div>
   `
 }
-
 
 const Menus = {
   main: MainMenu,

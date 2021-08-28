@@ -5,7 +5,9 @@ const TrackList = {
     currenttrack: { type: Object, default: null },
     tracks: { type: Array, default: null },
     linkclick: { type: Function, default: null },
-    activelinkclick: { type: Function, default: null }
+    activelinkclick: { type: Function, default: null },
+    deletemodeactive: { type: Boolean, default: null },
+    checkclicklink: { type: Function, default: null },
   },
 
   components:{
@@ -19,6 +21,8 @@ const TrackList = {
         :track="i"
         :click="linkclick"
         :activelinkclick="activelinkclick"
+        :deletemodeactive="deletemodeactive"
+        :checkclick="checkclicklink"
       ></track-link>
     </ol>
 

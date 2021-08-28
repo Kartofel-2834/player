@@ -3,13 +3,23 @@ import PlayerInners from '/file?path=js/player/player-inners.js'
 const TrackLink = {
   props: {
     currenttrack: { type: Object, default: null },
+    deletemodeactive: { type: Boolean, default: false },
     track: { type: Object, default: null },
     click: { type: Function, default: null },
     activelinkclick: { type: Function, default: null },
+    checkclick: { type: Function, default: null }
   },
+
+  data(){ return { checked: false } },
 
   methods: {
     clickAppended( event ){
+      if( this.deletemodeactive ){
+        this.checked = !this.checked
+        this.checkclick(this.checked, this.track._id)
+        return
+      }
+
       if( event.target.id == 'trackMenuOpen' ){ return }
 
       if( this.currenttrack._id == this.track._id ){
@@ -25,7 +35,9 @@ const TrackLink = {
   computed:{
     cssClasses(){
       let classes = ['track_link', 'space_between', 'align']
-      if( this.currenttrack._id == this.track._id ){ classes.push('track_link_active') }
+      if( !this.deletemodeactive && this.currenttrack._id == this.track._id ){
+        classes.push('track_link_active')
+      }
       return classes
     },
 
@@ -35,10 +47,20 @@ const TrackLink = {
 
     ballCssClasses(){
       return [
-        this.currenttrack._id == this.track._id ? "ball" : "hide",
+        !this.deletemodeactive && this.currenttrack._id == this.track._id ? "ball" : "hide",
         this.currenttrack.paused ? "pause_ball" : "play_ball"
       ]
     },
+
+    trackMenuButtonCssClasses(){
+      if ( this.deletemodeactive || this.currenttrack._id == this.track._id ){
+        return 'hide'
+      }
+      else{
+        return ['track_menu_open_button', 'button']
+      }
+    },
+
   },
 
   components: {
@@ -59,11 +81,18 @@ const TrackLink = {
       <div style="margin-right: 1em">
         <div
           id="trackMenuOpen"
-          :class="currenttrack._id == track._id ? 'hide' : ['track_menu_open_button', 'button']"
+          :class="trackMenuButtonCssClasses"
         >
             <div class="menu_button_ball"></div>
             <div class="menu_button_ball"></div>
             <div class="menu_button_ball"></div>
+        </div>
+
+        <div
+          :class="[ 'checkbox', { 'hide' : !deletemodeactive }]"
+          :style="{ 'backgroundColor': checked ? 'green' : 'red' }"
+        >
+
         </div>
 
         <div :class="ballCssClasses"></div>

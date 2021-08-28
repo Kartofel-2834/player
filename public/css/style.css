@@ -111,11 +111,15 @@ body{
   justify-content: space-between;
 }
 
+.fixed{
+  position: fixed;
+  z-index: 1000;
+}
+
 
 #app{
   position: absolute;
   display: flex;
-  height: 100vh;
   width: 100%;
 }
 
@@ -154,14 +158,19 @@ body{
   background-color: #1a3752;
 }
 
+#plusButton, #trashButton { transition: 0.15s linear }
+
+#plusButton::before, #trashButton::before{ display: none }
+
 #plusButton{
   background: no-repeat center/45%;
   background-image: url("/file?path=icons\\plus.svg");
-  transition: 0.15s linear;
 }
 
-#plusButton::before{ display: none }
-
+#trashButton{
+  background: no-repeat center/56%;
+  background-image: url("/file?path=icons\\trash.svg");
+}
 
 .player{
   padding: 1.3em;
@@ -331,7 +340,7 @@ ol{
   width: 100%;
   height: fit-content;
   margin-top: 10rem;
-  margin-bottom: 4rem;
+  margin-bottom: 6rem;
   height: fit-content;
 }
 
@@ -404,6 +413,79 @@ li{}
   background-color: #d2cfa6;
 }
 
+.checkbox{
+  width: 2em;
+  height: 2em;
+  background-color: red;
+  transition: 0.15s linear;
+}
+
+
+.delete_mode_button_inner{
+  bottom: 15px;
+  width: 100%;
+}
+
+.trashlist_button{
+  user-select: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: 600;
+  font-size: 1.4rem;
+  background-color: white;
+  color: #071c2f;
+  text-transform: uppercase;
+  width: fit-content;
+  padding: 0.9rem 1.9rem;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: 0.15s linear;
+}
+
+.trashlist_button:active{
+  transition: none;
+  opacity: 0.9;
+}
+
+.trashlist_button:hover{
+  background-color: #d83131;
+  color: #00000000;
+}
+
+
+.trashlist_button::before{
+  transform: scale(0);
+  position: absolute;
+  content: '';
+  background-color: #00000000;
+  background: no-repeat center/100%;
+  background-image: url("/file?path=icons\\trash.svg");
+  width: 1.5rem;
+  height: 1.5rem;
+  z-index: 10000;
+  transition: 0.15s linear;
+}
+
+.trashlist_button:hover::before{
+  transform: scale(1);
+}
+
+#backFromDeleteMode{
+  margin-left: 2rem;
+}
+
+#backFromDeleteMode::before{
+  background-image: url("/file?path=icons\\back.svg");
+}
+
+
+#backFromDeleteMode:hover{
+  background-color: #4848c3;
+}
+
+
+
 
 
 .range_input_inner{
@@ -465,14 +547,14 @@ input[type=range]:active::-webkit-slider-thumb {
 }
 
 .marquee {
-    display: block;
-    width: 100%;
-    white-space: nowrap;
-    overflow: hidden;
+  display: block;
+  width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
 }
 
 .marquee span {
-    display: inline-block;
-    padding-left: 100%;
-    animation: scroll 5s infinite linear;
+  display: inline-block;
+  padding-left: 100%;
+  animation: scroll 5s infinite linear;
 }

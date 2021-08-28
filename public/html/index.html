@@ -11,7 +11,7 @@
   </head>
   <body>
 
-    <div id="app">
+    <div id="app" class="column">
 
       <player
         :track="track"
@@ -29,6 +29,7 @@
 
       <side-main-menu
         :addtracklinkclick="addNewTracks"
+        :deletetracklinkclick="deleteModeOn"
       ></side-main-menu>
 
       <track-list
@@ -36,8 +37,17 @@
         :tracks="myTracks"
         :linkclick="changeTrack"
         :activelinkclick="playPause"
+        :deletemodeactive="deleteMode"
+        :checkclicklink="changeTrashList"
       ></track-list>
-      
+
+      <div class="align center fixed delete_mode_button_inner"
+        :style="{ display: deleteMode ? 'flex' : 'none' }"
+      >
+        <delete-tracks-button></delete-tracks-button>
+        <back-from-delete-mode-button></back-from-delete-mode-button>
+      </div>
+
     </div>
 
 

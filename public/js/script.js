@@ -1,6 +1,7 @@
 import PlayerComponent from '/file?path=js/player/player-main.js'
 import TrackList from '/file?path=js/trackList/track-list.js'
 import Menus from '/file?path=js/side-menu.js'
+import DeleteModeButtons from '/file?path=js/delete-mode-buttons.js'
 
 const App = {
   data(){
@@ -26,6 +27,10 @@ const App = {
         volume: 100,
       },
 
+      trashList: new Set(),
+
+      deleteMode: false,
+
       userChangesCurrentTime: false,
 
     }
@@ -35,16 +40,22 @@ const App = {
     "side-main-menu": Menus.main,
     "player": PlayerComponent,
     "track-list": TrackList,
+    "delete-tracks-button": DeleteModeButtons.deleteButton,
+    "back-from-delete-mode-button": DeleteModeButtons.backButton,
   },
 
   methods:{
+    deleteModeOn(){ this.deleteMode = true },
+    deleteModeOff(){ this.deleteMode = false },
+
     previousTrack(){
-      if( this.song.currentTime > 5 ){
+      let index = this.playList.map( t => t._id ).indexOf( this.track._id )
+
+      if( this.song.currentTime > 5 || index == -1 ){
         this.song.currentTime = 0
         return
       }
 
-      let index = this.playList.map( t => t._id ).indexOf( this.track._id )
       if( index == 0 ){ return }
       this.changeTrack( this.playList[ index - 1 ] )
     },
@@ -58,8 +69,10 @@ const App = {
 
     nextTrack(){
       let index = this.playList.map( t => t._id ).indexOf( this.track._id )
+      if( index == -1 ){ return }
+
       index = index < this.playList.length-1 ? index+1 : 0
-      this.changeTrack( this.playList[ index ] )
+      this.changeTrack( this.playList[ index + 1 ] )
     },
 
     timeLineControlOn(){
@@ -142,8 +155,12 @@ const App = {
 
       let answer = await postRequest('/addTracks', formData)
 
-      
-      alert(answer)
+//      alert(answer)
+    },
+
+    changeTrashList(checked, trackId){
+      if( checked ){ this.trashList.add( trackId ) }
+      else{ this.trashList.delete( trackId ) }
     },
   },
 
