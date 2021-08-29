@@ -29,6 +29,9 @@ const upload = multer({
 
 const urlencodedParser = bodyParser.urlencoded({ extended: false })
 
+router.use( urlencodedParser )
+router.use( bodyParser.json() )
+
 let usersData = null
 let tracksData = null
 
@@ -69,16 +72,51 @@ router.post("/addTracks", upload, async (req, res)=>{
       newTrack.author = data.artist ? data.artist : "None"
 
       try {
-        newTrack = await tracksData.create( newTrack )
+        await tracksData.create( newTrack )
 
         await usersData.findOneAndUpdate( { name: "Kartofel_2834" }, {
           $push: { tracks: String( newTrack._id ) }
         })
-      } catch (e) { throw e }
+      } catch(e){ throw e }
 
       let trackPath = path.join(staticShit.publicPath, 'tracks', `${newTrack._id}.mp3`)
 
       await overwriteFile( file.path, trackPath )
+    })
+
+  }
+
+  res.sendStatus(200)
+})
+
+router.post("/deleteTracks", async (req, res)=>{
+  let trash = req.body.trash
+
+  if( !trash || trash.length == 0 ){ res.sendStatus(200); return }
+
+  try {
+    await tracksData.deleteMany({ _id: { $in: trash } })
+    await usersData.findOneAndUpdate( { name: "Kartofel_2834" }, {
+      $pull: { tracks: { $in: trash } }
+    })
+  }
+  catch(e){ throw e }
+
+  let posterPath = null
+  let trackPath = null
+
+  for( let id of trash ){
+    posterPath = path.join( staticShit.publicPath, 'posters', `${id}.jpg`)
+    trackPath = path.join( staticShit.publicPath, 'tracks', `${id}.mp3`)
+
+    fs.access(posterPath, fs.F_OK, async (err)=>{
+      if (err) { return }
+      await fs.unlink( posterPath, (err)=>{ if(err){ throw err } } )
+    })
+
+    fs.access(trackPath, fs.F_OK, async (err)=>{
+      if (err) { return }
+      await fs.unlink( trackPath, (err)=>{ if(err){ throw err } } )
     })
 
   }

@@ -3,6 +3,14 @@ import TrackList from '/file?path=js/trackList/track-list.js'
 import Menus from '/file?path=js/side-menu.js'
 import DeleteModeButtons from '/file?path=js/delete-mode-buttons.js'
 
+const jsonRequestOptions = (body)=>{
+  return {
+    headers:{ 'Content-Type': 'application/json;charset=utf-8' },
+    method: "POST",
+    body: JSON.stringify(body)
+  }
+}
+
 const App = {
   data(){
     return {
@@ -46,7 +54,19 @@ const App = {
 
   methods:{
     deleteModeOn(){ this.deleteMode = true },
+
     deleteModeOff(){ this.deleteMode = false },
+
+    async deleteSelectedTracks(){
+      if( this.trashList.size == 0 ){ return }
+
+      this.deleteModeOff()
+
+      let answer = await fetch("/deleteTracks", jsonRequestOptions({
+        trash: Array.from( this.trashList )
+      }))
+      console.log( answer )
+    },
 
     previousTrack(){
       let index = this.playList.map( t => t._id ).indexOf( this.track._id )
@@ -72,7 +92,7 @@ const App = {
       if( index == -1 ){ return }
 
       index = index < this.playList.length-1 ? index+1 : 0
-      this.changeTrack( this.playList[ index + 1 ] )
+      this.changeTrack( this.playList[ index ] )
     },
 
     timeLineControlOn(){
@@ -191,6 +211,7 @@ const App = {
   }
 
 }
+
 
 function getRandom( limit ){
 	return Math.floor(Math.random() * limit)

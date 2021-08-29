@@ -35,9 +35,16 @@ const TrackLink = {
   computed:{
     cssClasses(){
       let classes = ['track_link', 'space_between', 'align']
-      if( !this.deletemodeactive && this.currenttrack._id == this.track._id ){
-        classes.push('track_link_active')
+
+      if( this.deletemodeactive ){
+        if( this.checked ){ classes.push('checked_link') }
       }
+      else{
+        if( this.currenttrack._id == this.track._id ){ classes.push('track_link_active') }
+        this.checked = false
+        this.checkclick()
+      }
+
       return classes
     },
 
@@ -83,16 +90,19 @@ const TrackLink = {
           id="trackMenuOpen"
           :class="trackMenuButtonCssClasses"
         >
-            <div class="menu_button_ball"></div>
-            <div class="menu_button_ball"></div>
-            <div class="menu_button_ball"></div>
+          <div class="menu_button_ball"></div>
+          <div class="menu_button_ball"></div>
+          <div class="menu_button_ball"></div>
         </div>
 
         <div
-          :class="[ 'checkbox', { 'hide' : !deletemodeactive }]"
-          :style="{ 'backgroundColor': checked ? 'green' : 'red' }"
-        >
-
+          :class="[
+            'checkbox',
+            {
+              'hide': !deletemodeactive,
+              'checkbox_active': checked
+            }
+          ]">
         </div>
 
         <div :class="ballCssClasses"></div>

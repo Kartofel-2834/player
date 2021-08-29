@@ -413,13 +413,34 @@ li{}
   background-color: #d2cfa6;
 }
 
+.checked_link{ background-color: #071c2fb5 }
+
 .checkbox{
   width: 2em;
   height: 2em;
-  background-color: red;
+  border: 3px solid #74808b;
+  border-radius: 3px;
   transition: 0.15s linear;
 }
 
+.checkbox::before{
+  content: '';
+  transform: scale(0);
+  position: absolute;
+  width: 2em;
+  height: 2em;
+  background: no-repeat center/50%;
+  background-image: url("/file?path=icons\\check.svg");
+  transition: 0.1s linear;
+}
+
+.checkbox_active{
+  border: 3px solid #f2eea7;
+}
+
+.checkbox_active::before{
+  transform: scale(1);
+}
 
 .delete_mode_button_inner{
   bottom: 15px;
@@ -478,7 +499,6 @@ li{}
 #backFromDeleteMode::before{
   background-image: url("/file?path=icons\\back.svg");
 }
-
 
 #backFromDeleteMode:hover{
   background-color: #4848c3;

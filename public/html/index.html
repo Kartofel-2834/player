@@ -2,12 +2,12 @@
 <html lang="en" dir="ltr">
   <head>
     <meta charset="utf-8">
-    <title>My player</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Exo+2:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/file?path=css/style.css">
     <link rel="icon" href="data:,">
+    <title>My Player</title>
   </head>
   <body>
 
@@ -44,8 +44,8 @@
       <div class="align center fixed delete_mode_button_inner"
         :style="{ display: deleteMode ? 'flex' : 'none' }"
       >
-        <delete-tracks-button></delete-tracks-button>
-        <back-from-delete-mode-button></back-from-delete-mode-button>
+        <delete-tracks-button :click="deleteSelectedTracks" :count="trashList.size"></delete-tracks-button>
+        <back-from-delete-mode-button :click="deleteModeOff"></back-from-delete-mode-button>
       </div>
 
     </div>
