@@ -11,6 +11,38 @@ const jsonRequestOptions = (body)=>{
   }
 }
 
+
+function customAlert( text ){
+  let a = document.getElementById('alerter')
+
+  if( text ){ a.innerText = text }
+
+  if( a.classList.contains('hide') ){
+    a.classList.remove('hide')
+  }
+
+  setTimeout( ()=>{
+    if( a.classList.contains('hide_opacity') ){
+      a.classList.remove('hide_opacity')
+    }
+  }, 200 )
+
+
+  a.onclick = function(){
+    if( !this.classList.contains('hide_opacity') ){
+      this.classList.add('hide_opacity')
+    }
+
+    setTimeout( ()=>{
+      if( !a.classList.contains('hide') ){
+        a.classList.add('hide')
+      }
+    }, 200 )
+  }
+
+  setTimeout( ()=>{ a.click() }, 3000 )
+}
+
 const App = {
   data(){
     return {
@@ -65,7 +97,10 @@ const App = {
       let answer = await fetch("/deleteTracks", jsonRequestOptions({
         trash: Array.from( this.trashList )
       }))
-      console.log( answer )
+
+      answer = await answer.text()
+
+      customAlert( answer )
     },
 
     previousTrack(){
@@ -85,6 +120,8 @@ const App = {
       else{ this.song.pause() }
 
       this.track.paused = this.song.paused
+      console.log(this.kkk)
+      this.kkk+="5"
     },
 
     nextTrack(){
@@ -156,6 +193,7 @@ const App = {
       this.track.author = newTrack.author
       this.track.poster = newTrack.poster
       this.track.progress = 0
+      document.title = `${ this.track.title } - ${ this.track.author }`
 
       if( !this.track.paused ){ this.song.play() }
 
@@ -175,7 +213,7 @@ const App = {
 
       let answer = await postRequest('/addTracks', formData)
 
-//      alert(answer)
+      customAlert( answer )
     },
 
     changeTrashList(checked, trackId){

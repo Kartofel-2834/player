@@ -507,6 +507,27 @@ li{}
 
 
 
+.alerter_inner{
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  margin-bottom: 1.5rem;
+}
+
+.alerter{
+  width: fit-content;
+  text-align: center;
+  font-size: 1.5rem;
+  z-index: 100000;
+  padding: 0.3em 5em;
+  margin: 0 auto;
+  color: #1c1c1c;
+  background-color: #e2e2e2;
+  border-radius: 30px;
+  box-shadow: 12px -1px 22px 0px rgba(34, 60, 80, 0.2);
+  cursor: pointer;
+  transition: 0.15s linear;
+}
 
 .range_input_inner{
   border-radius: 10px;
