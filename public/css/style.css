@@ -527,13 +527,6 @@ li{}
   background-color: #4848c3;
 }
 
-.edit_field_blackhole{
-
-}
-
-
-
-
 .alerter_inner{
   position: fixed;
   bottom: 0;
@@ -555,6 +548,27 @@ li{}
   cursor: pointer;
   transition: 0.15s linear;
 }
+
+.edit_field_inner{
+  transform: scale(0);
+  transition: 0.25s linear;
+}
+
+.edit_field{
+  width: 45%;
+  max-height: 85%;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  background-color: #12293d;
+}
+
+.edit_show{
+  z-index: 100000;
+  transform: scale(1);
+}
+
+
+
 
 .range_input_inner{
   border-radius: 10px;

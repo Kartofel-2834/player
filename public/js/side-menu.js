@@ -101,26 +101,23 @@ const MainMenu = new Menu({
 const TrackMenu = new Menu({
   props: {
     counter: { type: Number, default: 0 },
+    editcounter: { type: Number, default: 0 },
     track: { type: Object, default: null },
     deletetracklinkclick: { type: Function, default: null },
+    editlinkclick: { type: Function, default: null },
   },
 
   created(){
 
-    this.deleteLink = async ()=>{
+    this.deleteLink = ()=>{
       this.deletetracklinkclick( [ this.track._id ] )
       this.close()
-    }
-
-    this.kkk = ()=>{
-      alert(2)
     }
 
   },
 
   computed: {
     openMenu(){
-      console.log(this.deletetracklinkclick)
       if( this.counter > 0 ){
         this.open()
       }
@@ -140,7 +137,7 @@ const TrackMenu = new Menu({
     ]"></div>
 
     <div :id="openMenu" :class="[ 'menu', { 'hide_side_menu': !opened } ]">
-      <menu-link text="Edit" iconid="editIcon" @click="kkk"></menu-link>
+      <menu-link text="Edit" iconid="editIcon" @click="menuLinkClickEvent('editlinkclick')"></menu-link>
       <menu-link text="Delete" iconid="trashIcon" @click="deleteLink"></menu-link>
     </div>
   `

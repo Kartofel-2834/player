@@ -41,9 +41,13 @@
         :track="trackForMenu"
         :counter="trackMenuOpened"
         :deletetracklinkclick="deleteTracks"
+        :editlinkclick="openTrackEditor"
       ></side-track-menu>
 
-      <edit-field></edit-field>
+      <edit-field
+        :track="trackForMenu"
+        :counter="trackEditorCounter"
+      ></edit-field>
 
       <track-list
         :currenttrack="track"

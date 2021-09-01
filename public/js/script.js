@@ -70,6 +70,8 @@ const App = {
 
       trackMenuOpened: 0,
 
+      trackEditorCounter: 0,
+
       trackForMenu: null,
 
       trashList: new Set(),
@@ -92,11 +94,17 @@ const App = {
   },
 
   methods:{
+    changeCounter( counterName ){
+      if( this[ counterName ] < 10 ){ this[ counterName ]++ }
+      else{ this[ counterName ] = 0 }
+    },
+
     openTrackMenu( track ){
       this.trackForMenu = track
-      if( this.trackMenuOpened < 10 ){ this.trackMenuOpened++ }
-      else{ this.trackMenuOpened = 0 }
+      this.changeCounter('trackMenuOpened')
     },
+
+    openTrackEditor(){ this.changeCounter('trackEditorCounter') },
 
     deleteModeOn(){ this.deleteMode = true },
 
