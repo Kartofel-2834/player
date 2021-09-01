@@ -8,6 +8,7 @@ const TrackList = {
     activelinkclick: { type: Function, default: null },
     deletemodeactive: { type: Boolean, default: null },
     checkclicklink: { type: Function, default: null },
+    menubuttonclick: { type: Function, default: null },
   },
 
   components:{
@@ -23,6 +24,7 @@ const TrackList = {
         :activelinkclick="activelinkclick"
         :deletemodeactive="deletemodeactive"
         :checkclick="checkclicklink"
+        :menubuttonclick="menubuttonclick"
       ></track-link>
     </ol>
 

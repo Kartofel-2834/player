@@ -7,7 +7,8 @@ const TrackLink = {
     track: { type: Object, default: null },
     click: { type: Function, default: null },
     activelinkclick: { type: Function, default: null },
-    checkclick: { type: Function, default: null }
+    checkclick: { type: Function, default: null },
+    menubuttonclick: { type: Function, default: null },
   },
 
   data(){ return { checked: false } },
@@ -89,6 +90,7 @@ const TrackLink = {
         <div
           id="trackMenuOpen"
           :class="trackMenuButtonCssClasses"
+          @click="menubuttonclick( track )"
         >
           <div class="menu_button_ball"></div>
           <div class="menu_button_ball"></div>

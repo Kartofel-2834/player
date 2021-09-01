@@ -13,6 +13,7 @@ const Player = {
     randombuttonclick: { type: Function, default: null },
     volumerangeinput: { type: Function, default: null },
     mutebuttonclick: { type: Function, default: null },
+    infobuttonclick: { type: Function, default: null },
   },
 
   components: {
@@ -41,6 +42,7 @@ const Player = {
         :randombuttonclick="randombuttonclick"
         :volumerangeinput="volumerangeinput"
         :mutebuttonclick="mutebuttonclick"
+        :infobuttonclick="infobuttonclick"
       ></player-secondary-button-inner>
     </div>
   `

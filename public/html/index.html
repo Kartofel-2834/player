@@ -25,6 +25,7 @@
         :randombuttonclick="changeRandomMode"
         :volumerangeinput="changeVolume"
         :mutebuttonclick="changeMuteMode"
+        :infobuttonclick="openTrackMenu"
       ></player>
 
       <div class="alerter_inner">
@@ -36,6 +37,14 @@
         :deletetracklinkclick="deleteModeOn"
       ></side-main-menu>
 
+      <side-track-menu
+        :track="trackForMenu"
+        :counter="trackMenuOpened"
+        :deletetracklinkclick="deleteTracks"
+      ></side-track-menu>
+
+      <edit-field></edit-field>
+
       <track-list
         :currenttrack="track"
         :tracks="myTracks"
@@ -43,6 +52,7 @@
         :activelinkclick="playPause"
         :deletemodeactive="deleteMode"
         :checkclicklink="changeTrashList"
+        :menubuttonclick="openTrackMenu"
       ></track-list>
 
       <div class="align center fixed delete_mode_button_inner"

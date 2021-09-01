@@ -82,6 +82,15 @@ const MuteButton = {
   template: `<div :class="cssClasses" @click="click"></div>`
 }
 
+const InfoButton = {
+  props: {
+    track: { type: Object, default: null },
+    click: { type: Function, default: null }
+  },
+
+  template: `<div class="button info_button" @click="click( track )"></div>`
+}
+
 
 const PlayerButtons = {
   previousTrackButton: PreviousTrackButton,
@@ -90,6 +99,7 @@ const PlayerButtons = {
   repeatButton: RepeatButton,
   randomButton: RandomButton,
   muteButton: MuteButton,
+  infoButton: InfoButton,
 }
 
 export default PlayerButtons

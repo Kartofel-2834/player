@@ -72,7 +72,7 @@ router.post("/addTracks", upload, async (req, res)=>{
       newTrack.author = data.artist ? data.artist : "None"
 
       try {
-        await tracksData.create( newTrack )
+        newTrack = await tracksData.create( newTrack )
 
         await usersData.findOneAndUpdate( { name: "Kartofel_2834" }, {
           $push: { tracks: String( newTrack._id ) }
@@ -91,6 +91,8 @@ router.post("/addTracks", upload, async (req, res)=>{
 
 router.post("/deleteTracks", async (req, res)=>{
   let trash = req.body.trash
+
+  console.log( trash )
 
   if( !trash || trash.length == 0 ){ res.sendStatus(200); return }
 

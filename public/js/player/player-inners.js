@@ -14,7 +14,19 @@ const PlayerTrackInfoComponent = {
   methods: {
     textClasses( key ){
       var ans = Array.from( this[key + 'classes'] )
-      if( this.marquee_active && this.track[key].length > 30 ){ ans.push('marquee') }
+
+      if( this.marquee_active ){
+        switch (key) {
+          case 'title':
+            if( this.track[key].length > 25 ){ ans.push('marquee') }
+          break
+
+          case 'author':
+            if( this.track[key].length > 35 ){ ans.push('marquee') }
+          break
+        }
+      }
+
       return ans
     }
   },
@@ -120,6 +132,7 @@ const PlayerSecondaryButtonInner = {
     randombuttonclick: { type: Function, default: null },
     volumerangeinput: { type: Function, default: null },
     mutebuttonclick: { type: Function, default: null },
+    infobuttonclick: { type: Function, default: null },
   },
 
   components:{
@@ -127,6 +140,7 @@ const PlayerSecondaryButtonInner = {
     "random-button": PlayerButtons.randomButton,
     "mute-button": PlayerButtons.muteButton,
     "input-type-range": InputTypeRange,
+    "info-button": PlayerButtons.infoButton,
   },
 
   template: `
@@ -149,6 +163,8 @@ const PlayerSecondaryButtonInner = {
             :input="volumerangeinput"
           ></input-type-range>
         </div>
+
+        <info-button :click="infobuttonclick" :track="track"></info-button>
       </div>
     </div>
   `

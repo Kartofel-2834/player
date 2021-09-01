@@ -1,5 +1,6 @@
 const MenuLink = {
   props: {
+    click: { type: Function, default: null },
     text: { type: String, default: 'Text' },
     iconid: { type: String, default: null },
   },
@@ -15,30 +16,46 @@ const MenuLink = {
   template: `
     <div class="menu_link space_between align" @mouseover="changeHoverMode" @mouseout="changeHoverMode">
       <div>{{ text }}</div>
-      <img :class="[ 'button', { 'hide_opacity': !hover }]" :id="iconid" src="">
+      <img :class="[ 'menu_icon', 'button', { 'hide_opacity': !hover }]" :id="iconid" src="">
     </div>
   `
 }
 
 
+class Menu {
+  constructor( customOpt ) {
+    this.data = function(){
+      return {
+        opened: false,
+        darkBackClasses: [ 'menu_dark_back' ],
+      }
+    }
 
-const MainMenu = {
+    this.methods = {
+      openOrClose(){ this.opened = !this.opened },
+
+      close(){ this.opened = false },
+
+      open(){ this.opened = true },
+
+      menuLinkClickEvent( method, e ){ this[ method ](e); this.close() }
+    }
+
+    this.components = {
+      "menu-link": MenuLink,
+    }
+
+    for( let key of Object.keys(customOpt) ){
+      this[key] = customOpt[key]
+    }
+
+  }
+}
+
+const MainMenu = new Menu({
   props: {
     addtracklinkclick: { type: Function, default: null },
     deletetracklinkclick: { type: Function, default: null },
-  },
-
-  data(){ return {
-    opened: false,
-    darkBackClasses: [ 'menu_dark_back' ],
-  } },
-
-  methods: {
-    openOrClose(){ this.opened = !this.opened },
-
-    close(){ this.opened = false },
-
-    menuLinkClickEvent( method, e ){ this[ method ](e); this.close() }
   },
 
   created(){
@@ -49,10 +66,6 @@ const MainMenu = {
         break
       }
     }
-  },
-
-  components:{
-    "menu-link": MenuLink,
   },
 
   template: `
@@ -67,7 +80,7 @@ const MainMenu = {
     <div :class="[ 'menu', { 'hide_side_menu': !opened } ]">
 
       <label>
-        <menu-link text="Add Tracks" iconid="plusButton"></menu-link>
+        <menu-link text="Add Tracks" iconid="plusIcon"></menu-link>
         <input type="file"
           class="hide" accept=".mp3" multiple="true"
           @change="menuLinkClickEvent( 'addtracklinkclick', $event )"
@@ -76,17 +89,68 @@ const MainMenu = {
 
       <menu-link
         text="Delete tracks"
-        iconid="trashButton"
+        iconid="trashIcon"
         @click="menuLinkClickEvent( 'deletetracklinkclick', $event )"
       ></menu-link>
 
     </div>
   `
-}
+})
+
+
+const TrackMenu = new Menu({
+  props: {
+    counter: { type: Number, default: 0 },
+    track: { type: Object, default: null },
+    deletetracklinkclick: { type: Function, default: null },
+  },
+
+  created(){
+
+    this.deleteLink = async ()=>{
+      this.deletetracklinkclick( [ this.track._id ] )
+      this.close()
+    }
+
+    this.kkk = ()=>{
+      alert(2)
+    }
+
+  },
+
+  computed: {
+    openMenu(){
+      console.log(this.deletetracklinkclick)
+      if( this.counter > 0 ){
+        this.open()
+      }
+
+      return 'trackMenu'
+    },
+
+  },
+
+  template: `
+    <div @click="close" :class="[
+      'menu_dark_back',
+      {
+        'hide_dark_menu_part': !opened,
+        'show_dark_menu_part': opened
+      }
+    ]"></div>
+
+    <div :id="openMenu" :class="[ 'menu', { 'hide_side_menu': !opened } ]">
+      <menu-link text="Edit" iconid="editIcon" @click="kkk"></menu-link>
+      <menu-link text="Delete" iconid="trashIcon" @click="deleteLink"></menu-link>
+    </div>
+  `
+})
+
+
 
 const Menus = {
   main: MainMenu,
-  forTrack: {},
+  forTrack: TrackMenu,
 }
 
 export default Menus

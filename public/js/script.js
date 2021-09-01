@@ -2,6 +2,7 @@ import PlayerComponent from '/file?path=js/player/player-main.js'
 import TrackList from '/file?path=js/trackList/track-list.js'
 import Menus from '/file?path=js/side-menu.js'
 import DeleteModeButtons from '/file?path=js/delete-mode-buttons.js'
+import EditField from '/file?path=js/track-editor.js'
 
 const jsonRequestOptions = (body)=>{
   return {
@@ -67,6 +68,10 @@ const App = {
         volume: 100,
       },
 
+      trackMenuOpened: 0,
+
+      trackForMenu: null,
+
       trashList: new Set(),
 
       deleteMode: false,
@@ -78,13 +83,21 @@ const App = {
 
   components: {
     "side-main-menu": Menus.main,
+    "side-track-menu": Menus.forTrack,
     "player": PlayerComponent,
     "track-list": TrackList,
     "delete-tracks-button": DeleteModeButtons.deleteButton,
     "back-from-delete-mode-button": DeleteModeButtons.backButton,
+    "edit-field": EditField,
   },
 
   methods:{
+    openTrackMenu( track ){
+      this.trackForMenu = track
+      if( this.trackMenuOpened < 10 ){ this.trackMenuOpened++ }
+      else{ this.trackMenuOpened = 0 }
+    },
+
     deleteModeOn(){ this.deleteMode = true },
 
     deleteModeOff(){ this.deleteMode = false },
@@ -94,13 +107,19 @@ const App = {
 
       this.deleteModeOff()
 
+      await this.deleteTracks( this.trashList )
+    },
+
+    async deleteTracks( array ){
       let answer = await fetch("/deleteTracks", jsonRequestOptions({
-        trash: Array.from( this.trashList )
+        trash: Array.from( array )
       }))
 
       answer = await answer.text()
 
       customAlert( answer )
+
+      return answer
     },
 
     previousTrack(){
@@ -120,8 +139,6 @@ const App = {
       else{ this.song.pause() }
 
       this.track.paused = this.song.paused
-      console.log(this.kkk)
-      this.kkk+="5"
     },
 
     nextTrack(){
@@ -193,7 +210,7 @@ const App = {
       this.track.author = newTrack.author
       this.track.poster = newTrack.poster
       this.track.progress = 0
-      document.title = `${ this.track.title } - ${ this.track.author }`
+      document.title = `${ this.track.author } - ${ this.track.title }`
 
       if( !this.track.paused ){ this.song.play() }
 
