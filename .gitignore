@@ -2,7 +2,8 @@
 /public/icons
 /public/tracks
 /public/posters
-/public/trackBuffer
+/public/fileBuffer
 /router/FFmpeg
+.gitignore
 *.json
 staticShit.js
