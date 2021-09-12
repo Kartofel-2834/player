@@ -128,6 +128,10 @@ body{
   position: fixed;
 }
 
+.half{ width: 50% }
+
+.fill_available{ width: -webkit-fill-available }
+
 
 #app{
   position: absolute;
@@ -557,15 +561,88 @@ li{}
 .edit_field{
   width: 45%;
   max-height: 85%;
-  overflow-y: scroll;
-  overflow-x: hidden;
+  overflow: hidden;
+  /*background-color: #12293d;  #071c2f*/
   background-color: #12293d;
+  padding: 3rem 0;
 }
 
 .edit_show{
   z-index: 100000;
   transform: scale(1);
 }
+
+.menu_poster_inner{
+  max-width: 10rem;
+  max-height: 10rem;
+  overflow: hidden;
+}
+
+.menu_poster{
+  width: 10rem;
+}
+
+.poster_add_hover{
+  opacity: 0.6;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+  background: no-repeat center/33%;
+  background-image: url("/file?path=icons\\draw.svg");
+  background-color: black;
+  transition: 0.1s linear;
+}
+
+.track_text_edit_inner{
+  width: 70%;
+  margin-top: 3rem;
+  font-size: 1.3rem;
+}
+
+.track_text_edit_tag{
+  margin-right: 2rem;
+}
+
+.track_edit_text_input{
+  appearance: none;
+  border: none;
+  font-family: 'Exo 2', sans-serif;
+  background: #00000000;
+  color:#ffffffa8;
+  caret-color: #f2eea7;
+  border-bottom: 2px solid #ffffffa8;
+  font-size: 0.9em;
+  outline: none;
+  text-align: center;
+  transition: 0.15s linear;
+  padding: 3px 0;
+  margin-bottom: 4px;
+}
+
+.track_edit_text_input:focus{
+  color: white;
+  border-bottom: 2px solid #f2eea7;
+}
+
+.save_changes_button{
+  font-size: 1.4rem;
+  margin-top: 3rem;
+  font-weight: 500;
+  color: black;
+  background-color: white;
+  padding: 0.5rem 2.5rem;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: 0.15s linear;
+}
+
+.save_changes_button:hover{
+  background-color: #f2eea7;
+  color: #071c2f;
+}
+
+
 
 
 

@@ -76,7 +76,7 @@ const TrackLink = {
   },
 
   template: `
-    <li :class="cssClasses" @click="clickAppended">
+    <li :class="cssClasses" @click="clickAppended" :id="track._id">
       <track-info
         :track="track"
         :posterclasses="posterCssClasses"

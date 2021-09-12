@@ -4,6 +4,8 @@ import Menus from '/file?path=js/side-menu.js'
 import DeleteModeButtons from '/file?path=js/delete-mode-buttons.js'
 import EditField from '/file?path=js/track-editor.js'
 
+import customAlert from '/file?path=js/alerter.js'
+
 const jsonRequestOptions = (body)=>{
   return {
     headers:{ 'Content-Type': 'application/json;charset=utf-8' },
@@ -12,37 +14,6 @@ const jsonRequestOptions = (body)=>{
   }
 }
 
-
-function customAlert( text ){
-  let a = document.getElementById('alerter')
-
-  if( text ){ a.innerText = text }
-
-  if( a.classList.contains('hide') ){
-    a.classList.remove('hide')
-  }
-
-  setTimeout( ()=>{
-    if( a.classList.contains('hide_opacity') ){
-      a.classList.remove('hide_opacity')
-    }
-  }, 200 )
-
-
-  a.onclick = function(){
-    if( !this.classList.contains('hide_opacity') ){
-      this.classList.add('hide_opacity')
-    }
-
-    setTimeout( ()=>{
-      if( !a.classList.contains('hide') ){
-        a.classList.add('hide')
-      }
-    }, 200 )
-  }
-
-  setTimeout( ()=>{ a.click() }, 3000 )
-}
 
 const App = {
   data(){
@@ -119,6 +90,13 @@ const App = {
     },
 
     async deleteTracks( array ){
+      this.myTracks = this.myTracks.filter( e => array.indexOf(e._id) == -1 )      
+      this.playList = this.playList.filter( e => array.indexOf(e._id) == -1 )
+
+      for( let id of array ){
+        document.getElementById( id ).remove()
+      }
+
       let answer = await fetch("/deleteTracks", jsonRequestOptions({
         trash: Array.from( array )
       }))
@@ -237,6 +215,8 @@ const App = {
       for( let f of files ){ formData.append( 'newTracks', f ) }
 
       let answer = await postRequest('/addTracks', formData)
+
+      this.getMyTracks()
 
       customAlert( answer )
     },

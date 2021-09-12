@@ -17,7 +17,7 @@ const TrackList = {
 
   template: `
     <ol v-if="tracks" class="track_list column align">
-      <track-link v-for="i in tracks"
+      <track-link v-for="i in tracks" :key="i._id"
         :currenttrack="currenttrack"
         :track="i"
         :click="linkclick"
