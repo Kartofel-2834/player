@@ -2,7 +2,11 @@ import PlayerComponent from '/file?path=js/player/player-main.js'
 import TrackList from '/file?path=js/trackList/track-list.js'
 import Menus from '/file?path=js/side-menu.js'
 import DeleteModeButtons from '/file?path=js/delete-mode-buttons.js'
-import EditField from '/file?path=js/track-editor.js'
+import EditFieldComponents from '/file?path=js/track-editor.js'
+import SearchField from '/file?path=js/search.js'
+
+import PlaylistBlocksInner from '/file?path=js/playlists/playlistBlocksInner.js'
+import PlaylistEditor from '/file?path=js/playlists/playlist-editor.js'
 
 import customAlert from '/file?path=js/alerter.js'
 
@@ -22,7 +26,11 @@ const App = {
 
       myTracks: null,
 
+      userWritesSmth: false,
+
       playList: null,
+
+      playlistsLink: null,
 
       track: {
         _id: null,
@@ -40,8 +48,8 @@ const App = {
       },
 
       trackMenuOpened: 0,
-
       trackEditorCounter: 0,
+      searchFieldCounter: 0,
 
       trackForMenu: null,
 
@@ -50,6 +58,9 @@ const App = {
       deleteMode: false,
 
       userChangesCurrentTime: false,
+
+      trackPageHided: false,
+      playlistPageHided: true,
 
     }
   },
@@ -61,13 +72,88 @@ const App = {
     "track-list": TrackList,
     "delete-tracks-button": DeleteModeButtons.deleteButton,
     "back-from-delete-mode-button": DeleteModeButtons.backButton,
-    "edit-field": EditField,
+    "edit-field": EditFieldComponents.editField,
+    "search-field": SearchField,
+    "playlist-blocks-inner": PlaylistBlocksInner,
+    "playlist-edit-field": PlaylistEditor,
   },
 
   methods:{
+    keyDownEventListener(e){
+      switch (e.keyCode) {
+        case 37: //left arrow
+          this.previousTrack()
+          return false
+        break
+
+        case 39: //right arrow
+          this.nextTrack()
+          return false
+        break
+
+        case 32: //space
+          this.playPause()
+          return false
+        break
+      }
+    },
+
+    openTrackPage(){
+      this.hidePage('playlistPageHided')
+      setTimeout( ()=>{ this.showPage('trackPageHided') }, 250 )
+    },
+
+    openPlaylistPage(){
+      this.hidePage('trackPageHided')
+      setTimeout( ()=>{ this.showPage('playlistPageHided') }, 250 )
+    },
+
+    hidePage( hideBoolName ){ this[ hideBoolName ] = true },
+    showPage( hideBoolName ){ this[ hideBoolName ] = false },
+
+    search(){
+      let searchInput = document.getElementById("searchInput")
+      let tester = searchInput.value.toLowerCase().split(" ").map( e => `(?=.*${e})`).join('')
+      tester = new RegExp( tester )
+      let result = []
+
+      if( this.nonSearchPl ){ this.playList = this.nonSearchPl }
+
+      for( let track of this.playList ){
+        let trackFullName = `${ track.title } ${ track.author }`.toLowerCase()
+        let test = tester.test( trackFullName )
+        let link = document.getElementById( `${ track._id }` )
+
+        if( !test ){
+          link.style.display = "none"
+        }
+        else{
+          link.style.display = "flex"
+          result.push( track )
+        }
+      }
+
+      this.playList = result
+    },
+
+    searchCancel(){
+      let allLinks = Array.from( document.getElementsByName("trackLink") )
+
+      for ( let link of allLinks ){
+        link.style.display = 'flex'
+      }
+
+      this.playList = this.nonSearchPl
+    },
+
     changeCounter( counterName ){
       if( this[ counterName ] < 10 ){ this[ counterName ]++ }
-      else{ this[ counterName ] = 0 }
+      else{ this[ counterName ] = 1 }
+    },
+
+    showSearchField(){
+      this.nonSearchPl = Array.from( this.playList )
+      this.changeCounter('searchFieldCounter')
     },
 
     openTrackMenu( track ){
@@ -90,7 +176,7 @@ const App = {
     },
 
     async deleteTracks( array ){
-      this.myTracks = this.myTracks.filter( e => array.indexOf(e._id) == -1 )      
+      this.myTracks = this.myTracks.filter( e => array.indexOf(e._id) == -1 )
       this.playList = this.playList.filter( e => array.indexOf(e._id) == -1 )
 
       for( let id of array ){
@@ -176,12 +262,13 @@ const App = {
       this.track.muted = this.song.muted
     },
 
-    async getMyTracks(){
-      let gettedTrackList = await fetch("/myTracks")
-      gettedTrackList = await gettedTrackList.json()
+    async getMyTracksAndPlaylists(){
+      let gettedData = await fetch("/myTracks")
+      gettedData = await gettedData.json()
 
-      this.myTracks = gettedTrackList
-      this.playList = gettedTrackList
+      this.myTracks = gettedData.tracks
+      this.playList = gettedData.tracks
+      this.playlistsLink = gettedData.playLists
 
       if( !this.playList ){ return }
 
@@ -216,7 +303,7 @@ const App = {
 
       let answer = await postRequest('/addTracks', formData)
 
-      this.getMyTracks()
+      this.getMyTracksAndPlaylists()
 
       customAlert( answer )
     },
@@ -229,7 +316,9 @@ const App = {
 
 
   async created(){
-    await this.getMyTracks()
+    await this.getMyTracksAndPlaylists()
+
+    window.onkeydown = (e)=>{ return this.keyDownEventListener(e) }
 
     this.song.ondurationchange = ()=>{
       this.track.duration = this.song.duration

@@ -5,7 +5,7 @@ const path = require("path")
 const ejs = require("ejs")
 
 const urlencodedParser = bodyParser.urlencoded({ extended: false })
-const port = 3000
+const port = 2000
 const routerPath = path.join(__dirname, "router")
 
 let sendFile = require( `${routerPath}/sendFile.js` )

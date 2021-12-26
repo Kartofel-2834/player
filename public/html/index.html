@@ -33,8 +33,11 @@
       </div>
 
       <side-main-menu
+        :tracklinkclick="openTrackPage"
+        :playlistslinkclick="openPlaylistPage"
         :addtracklinkclick="addNewTracks"
         :deletetracklinkclick="deleteModeOn"
+        :searchlinkclick="showSearchField"
       ></side-main-menu>
 
       <side-track-menu
@@ -47,9 +50,11 @@
       <edit-field
         :track="trackForMenu"
         :counter="trackEditorCounter"
+        :keydownlistener="keyDownEventListener"
       ></edit-field>
 
       <track-list
+        :hidepage="trackPageHided"
         :currenttrack="track"
         :tracks="myTracks"
         :linkclick="changeTrack"
@@ -66,7 +71,23 @@
         <back-from-delete-mode-button :click="deleteModeOff"></back-from-delete-mode-button>
       </div>
 
+      <search-field
+        :counter="searchFieldCounter"
+        :loupeclickevent="search"
+        :searchcancel="searchCancel"
+      ></search-field>
+
+
+
+
+
+      <div id="playlistPage" class="page_style center">
+        <playlist-blocks-inner :pagehided="playlistPageHided"></playlist-blocks-inner>
+      </div>
+
+      <playlist-edit-field></playlist-edit-field>
     </div>
+
 
 
     <script src="https://unpkg.com/vue@next"></script>

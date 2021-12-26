@@ -2,6 +2,7 @@ import TrackLink from '/file?path=js/trackList/track-link.js'
 
 const TrackList = {
   props: {
+    hidepage: { type: Boolean, default: null },
     currenttrack: { type: Object, default: null },
     tracks: { type: Array, default: null },
     linkclick: { type: Function, default: null },
@@ -15,8 +16,26 @@ const TrackList = {
     "track-link": TrackLink
   },
 
+  data(){
+    return { hided: this.hidepage, disp: this.hidepage }
+  },
+
+  computed:{
+    onHidePageConditionChange(){
+      if( this.hidepage ){
+        this.hided = this.hidepage
+        setTimeout( ()=>{ this.disp = this.hidepage }, 250 )
+      }
+      else {
+        this.disp = this.hidepage
+        setTimeout( ()=>{ this.hided = this.hidepage }, 100 )
+      }
+    }
+  },
+
   template: `
-    <ol v-if="tracks" class="track_list column align">
+    <div class="hide" :id="onHidePageConditionChange"></div>
+    <ol v-if="tracks" :class="[ 'page_style', 'column align', { 'hide_opacity': hided, 'hide': disp } ]">
       <track-link v-for="i in tracks" :key="i._id"
         :currenttrack="currenttrack"
         :track="i"

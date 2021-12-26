@@ -1,5 +1,7 @@
 import PlayerInners from '/file?path=js/player/player-inners.js'
 
+//console.log(`${ msg.from.first_name } ${ msg.from.last_name } написал: ${ msg.text }`)
+
 const TrackLink = {
   props: {
     currenttrack: { type: Object, default: null },
@@ -76,7 +78,7 @@ const TrackLink = {
   },
 
   template: `
-    <li :class="cssClasses" @click="clickAppended" :id="track._id">
+    <li :class="cssClasses" @click="clickAppended" :id="track._id" name="trackLink">
       <track-info
         :track="track"
         :posterclasses="posterCssClasses"

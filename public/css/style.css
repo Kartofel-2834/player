@@ -29,7 +29,10 @@
 
 
 
-*{ margin: 0 }
+*{
+  margin: 0;
+  font-family: 'Exo 2', sans-serif;
+}
 
 *::-webkit-scrollbar{
   -webkit-appearance: none;
@@ -55,7 +58,6 @@ body{
   margin: 0;
   background-color: #26384f;
   color:white;
-  font-family: 'Exo 2', sans-serif;
 }
 
 /*
@@ -77,7 +79,7 @@ body{
   grid-column: 1 / 1;
 }
 
-.hide{ display: none }
+.hide{ display: none !important }
 
 .hide_opacity{ opacity: 0 !important }
 
@@ -189,9 +191,29 @@ body{
   background-image: url("/file?path=icons\\trash.svg");
 }
 
+#menuLinkLoupe{
+  background: no-repeat center/50%;
+  background-image: url("/file?path=icons\\loupe_active.svg");
+}
+
+#playListIcon{
+  background: no-repeat center/58%;
+  background-image: url("/file?path=icons\\playlist.svg");
+}
+
+#trackLinkInMenu{
+  background: no-repeat center/53%;
+  background-image: url("/file?path=icons\\music.svg");
+}
+
 #editIcon{
   background: no-repeat center/50%;
   background-image: url("/file?path=icons\\draw.svg");
+}
+
+#downloadIcon{
+  background: no-repeat center/54%;
+  background-image: url("/file?path=icons\\download.svg");
 }
 
 .player{
@@ -363,12 +385,12 @@ ol{
   list-style-type: none;
 }
 
-.track_list{
+.page_style{
+  transition: 0.25s linear;
   width: 100%;
   height: fit-content;
   margin-top: 10rem;
   margin-bottom: 6rem;
-  height: fit-content;
 }
 
 li{}
@@ -437,7 +459,7 @@ li{}
 .menu_button_ball{
   width: 0.3em;
   height: 0.3em;
-  background-color: #d2cfa6;
+  background-color: #a7acb1;
 }
 
 .checked_link{ background-color: #071c2fb5 }
@@ -564,7 +586,20 @@ li{}
   overflow: hidden;
   /*background-color: #12293d;  #071c2f*/
   background-color: #12293d;
-  padding: 3rem 0;
+  padding-bottom: 3rem;
+}
+
+.close_button_inner{
+  width: 100%;
+  display: flex;
+  flex-direction: row-reverse;
+  margin-top: 1rem;
+}
+
+#closeButton{
+  margin-right: 20px;
+  background: no-repeat center/45%;
+  background-image: url("/file?path=icons\\close.svg");
 }
 
 .edit_show{
@@ -573,6 +608,7 @@ li{}
 }
 
 .menu_poster_inner{
+  min-width: 10rem;
   max-width: 10rem;
   max-height: 10rem;
   overflow: hidden;
@@ -607,7 +643,6 @@ li{}
 .track_edit_text_input{
   appearance: none;
   border: none;
-  font-family: 'Exo 2', sans-serif;
   background: #00000000;
   color:#ffffffa8;
   caret-color: #f2eea7;
@@ -644,6 +679,127 @@ li{}
 
 
 
+.top_line{
+  width: 100%;
+  height: 5px;
+  background-color: #677a8aa3;
+}
+
+.search_close{ transform: translate(0, 100%) }
+
+.search_inner{
+  bottom: 0;
+  width: 100%;
+  background-color: #071c2f;
+  height: fit-content;
+  transition: 0.15s linear;
+}
+
+.search_field{
+  flex-direction: row-reverse;
+  width: 70%;
+}
+
+.search_text_input{
+  outline: none;
+  border: none;
+  text-align: center;
+  width: -webkit-fill-available;
+  font-size: 1.5rem;
+  padding: 0.5rem calc(3rem + 0.75rem) 0.5rem 1.5rem;
+}
+
+.loupe_icon{
+  background: no-repeat center/15%;
+  background-image: url("/file?path=icons\\loupe_active.svg");
+  transition: 0.15s linear;
+}
+
+.search_close_button{
+  background: no-repeat center/15%;
+  background-image: url("/file?path=icons\\back.svg");
+}
+
+.search_inner_button{ padding: 0 40px }
+
+.search_inner_button::before{
+  margin-left: -40px;
+  padding: 0 40px;
+  border-radius: 0;
+}
+
+
+
+
+.playlist_block_inner{
+  background-color: #071c2f;
+  width: 70%;
+  justify-content: space-around;
+  display: flex;
+  flex-wrap: wrap;
+  transition: 0.25s linear;
+}
+
+.playlist_block{
+  cursor: pointer;
+  padding: 1rem;
+  margin: 3rem 0;
+  transition: 0.15s linear;
+}
+
+.playlist_block:hover{
+  background-color: #2a496591;
+  transform: scale(1.05);
+}
+
+.playlist_poster{
+  width: 15rem;
+  max-height: 15rem;
+  overflow: hidden;
+}
+
+.playlist_info{
+  padding: 3px 0;
+  max-width: 15rem;
+  overflow: hidden;
+}
+
+.playlist_name{
+  font-size: 1.2rem;
+}
+
+.playlist_author{
+  opacity: 0.7;
+}
+
+.add_playplist_button_inner{
+  margin: 1.5rem 0;
+  padding: 1rem 4rem;
+  font-size: 1.3rem;
+  font-weight: bold;
+  transition: 0.15s linear;
+}
+
+.add_playplist_button_inner:hover{
+  background-color: #4e5d7073;
+  cursor: pointer;
+}
+
+.playlist_edit_inner{
+  background-color: #12293d;
+  width: 70%;
+  height: 100vh;
+  top:0;
+}
+
+.track_select_link{
+  width: 70%;
+  min-height: 15rem;
+  height: -webkit-fill-available;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  background-color: #26384f;
+}
 
 
 

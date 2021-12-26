@@ -1,9 +1,9 @@
 const express = require("express")
 const bodyParser = require('body-parser')
 const router = express.Router()
+const mongoose = require('mongoose')
 const path = require("path")
 const fs = require("fs")
-const mongoose = require('mongoose');
 const multer = require('multer')
 const ffmetadata = require("ffmetadata")
 const staticShit = require('../staticShit')
@@ -50,6 +50,7 @@ router.use( bodyParser.json() )
 
 let usersData = null
 let tracksData = null
+let playlistsData = null
 
 mongoose.connect( staticShit.mongoCluster0, {
   useNewUrlParser: true,
@@ -60,17 +61,25 @@ mongoose.connect( staticShit.mongoCluster0, {
 
   usersData = staticShit.users
   tracksData = staticShit.tracks
+  playlistsData = staticShit.playlists
+
+  console.log(playlistsData)
 }).catch( err => console.log(err) )
 
 router.get("/myTracks", async (req, res)=>{
-  let myTracks = null
+  let tracks = null
+  let playlists = null
 
   try {
     let user = await usersData.findOne( { name: "Kartofel_2834" } )
-    myTracks = await tracksData.find( { _id: { $in: user.tracks }  } )
+    tracks = await tracksData.find( { _id: { $in: user.tracks }  } )
+    playlists = await playlistsData.find( { _id: { $in: user.playLists } } )
   } catch (e) { throw e }
 
-  res.json( myTracks.reverse() )
+  tracks = tracks.reverse()
+  playlists = playlists.reverse()
+
+  res.json( { tracks: tracks, playlists: playlists } )
 })
 
 router.post("/addTracks", uploadTracks, async (req, res)=>{

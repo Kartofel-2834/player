@@ -4,6 +4,12 @@ const EditTextInput = {
   props:{
     label: { type: String, default: 'Text' },
     inputval: { type: String, default: '' },
+    keydownlistener: { type: Function, default: ()=>{} }
+  },
+
+  methods: {
+    userStartWriting(){ window.onkeydown = ()=>{} },
+    userFinishWriting(){ window.onkeydown = (e)=>{ return this.keydownlistener(e) } },
   },
 
   template: `
@@ -14,13 +20,18 @@ const EditTextInput = {
         class="fill_available track_edit_text_input"
         :value="inputval"
         :id="label.toLowerCase()"
+        @focus="userStartWriting"
+        @blur="userFinishWriting"
       >
     </div>
   `
 }
 
 const PosterWithHoverSquare = {
-  props: { src: { type: String, default: '' } },
+  props: {
+    src: { type: String, default: '' },
+    cssclasses: { type: String, default: 'menu_poster grid_layout_element' }
+  },
 
   data(){
     return {
@@ -64,7 +75,7 @@ const PosterWithHoverSquare = {
       @mouseout="posterHoverOff"
     >
       <div :class="[ 'poster_add_hover', 'grid_layout_element', { 'hide_opacity': !posterHover }]"></div>
-      <img :src="posterSrc" class="menu_poster grid_layout_element">
+      <img :src="posterSrc" :class="cssclasses">
       <input type="file" class="hide" accept=".jpg, .png, .jpeg" :id="posterChanger" @input="changePosterOnFileFromInput">
     </label>
   `
@@ -83,17 +94,13 @@ const EditField = {
   props: {
     track: { type: Object, default: null },
     counter: { type: Number, default: 0 },
+    keydownlistener: { type: Function, default: ()=>{} }
   },
 
   methods: {
-    open(){
-      this.opened = true
-    },
+    open(){ this.opened = true },
 
-    close(){
-      this.opened = false
-      setTimeout( ()=>{ this.trackInDataInfo = {} }, 300 )
-    },
+    close(){ this.opened = false },
 
     innerClick( e ){
       for( let element of e.path ){
@@ -130,16 +137,14 @@ const EditField = {
 
       if( !formData.has('title') && !formData.has('author') && !formData.has('image') ){ return }
 
-      let answer_1 = await fetch('/editTrack', {
+      let answer = await fetch('/editTrack', {
         method: 'POST',
         body: formData,
       })
 
-      answer_1 = await answer_1.text()
+      answer = await answer.text()
 
-      this.close()
-
-      customAlert( answer_1 )
+      location.reload()
     }
   },
 
@@ -192,6 +197,10 @@ const EditField = {
     <div :class="innerCssClasses" @click="innerClick">
 
       <div :class="openMenuOnLinkClick" :id="trackCopy">
+        <div class="close_button_inner">
+          <div id="closeButton" class="button" @click="close"></div>
+        </div>
+
 
         <div class="center">
           <poster-with-hover :src="posterSrc"></poster-with-hover>
@@ -201,6 +210,7 @@ const EditField = {
           <edit-text-input
             label="Title"
             :inputval=" trackInDataInfo ? trackInDataInfo.title : '' "
+            :keydownlistener="keydownlistener"
           ></edit-text-input>
         </div>
 
@@ -208,6 +218,7 @@ const EditField = {
           <edit-text-input
             label="Author"
             :inputval=" trackInDataInfo ? trackInDataInfo.author : '' "
+            :keydownlistener="keydownlistener"
           ></edit-text-input>
         </div>
 
@@ -221,4 +232,8 @@ const EditField = {
   `
 }
 
-export default EditField
+export default {
+  editField: EditField,
+  posterWithHover: PosterWithHoverSquare,
+  editTextInput: EditTextInput
+}

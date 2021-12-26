@@ -54,8 +54,11 @@ class Menu {
 
 const MainMenu = new Menu({
   props: {
+    tracklinkclick: { type: Function, default: null },
+    playlistslinkclick: { type: Function, default: null },
     addtracklinkclick: { type: Function, default: null },
     deletetracklinkclick: { type: Function, default: null },
+    searchlinkclick: { type: Function, default: null },
   },
 
   created(){
@@ -78,6 +81,17 @@ const MainMenu = new Menu({
     ]"></div>
 
     <div :class="[ 'menu', { 'hide_side_menu': !opened } ]">
+      <menu-link
+        text="Tracks"
+        iconid="trackLinkInMenu"
+        @click="menuLinkClickEvent( 'tracklinkclick', $event )"
+      ></menu-link>
+
+      <menu-link
+        text="Playlists"
+        iconid="playListIcon"
+        @click="menuLinkClickEvent( 'playlistslinkclick', $event )"
+      ></menu-link>
 
       <label>
         <menu-link text="Add Tracks" iconid="plusIcon"></menu-link>
@@ -91,6 +105,12 @@ const MainMenu = new Menu({
         text="Delete tracks"
         iconid="trashIcon"
         @click="menuLinkClickEvent( 'deletetracklinkclick', $event )"
+      ></menu-link>
+
+      <menu-link
+        text="Search tracks"
+        iconid="menuLinkLoupe"
+        @click="menuLinkClickEvent( 'searchlinkclick', $event )"
       ></menu-link>
 
     </div>
@@ -109,21 +129,36 @@ const TrackMenu = new Menu({
 
   created(){
 
+    this.downloadSrc = ''
+
     this.deleteLink = ()=>{
       this.deletetracklinkclick( [ this.track._id ] )
       this.close()
+    }
+
+    this.downloadLink = ()=>{
+      document.getElementById('trueDownloadLink').click()
     }
 
   },
 
   computed: {
     openMenu(){
-      if( this.counter > 0 ){
+      if( this.counter > 0 && this.track ){
         this.open()
       }
 
       return 'trackMenu'
     },
+
+    downloadFileName(){
+      if( this.track ){
+        this.downloadSrc = `/file?path=/tracks/${this.track._id}.mp3`
+        return `${this.track.author} - ${this.track.title}`
+      }
+      else { return 'file' }
+
+    }
 
   },
 
@@ -138,7 +173,11 @@ const TrackMenu = new Menu({
 
     <div :id="openMenu" :class="[ 'menu', { 'hide_side_menu': !opened } ]">
       <menu-link text="Edit" iconid="editIcon" @click="menuLinkClickEvent('editlinkclick')"></menu-link>
+
       <menu-link text="Delete" iconid="trashIcon" @click="deleteLink"></menu-link>
+
+      <menu-link text="Download" iconid="downloadIcon" @click="downloadLink"></menu-link>
+      <a id="trueDownloadLink" :href="downloadSrc" :download="downloadFileName" class="hide"></a>
     </div>
   `
 })
