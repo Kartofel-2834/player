@@ -3,12 +3,18 @@ const SearchField = {
     counter: { type: Number, default: 0 },
     loupeclickevent: { type: Function, default: null },
     searchcancel: { type: Function, default: null },
+    keydownlistener: { type: Function, default: null },
   },
 
   data(){ return { hided: true } },
 
   methods: {
+    userStartWriting(){ window.onkeydown = ()=>{} },
+
+    userFinishWriting(){ window.onkeydown = (e)=>{ return this.keydownlistener(e) } },
+
     show(){ this.hided = false },
+
     hide(){
       this.searchcancel()
       this.hided = true
@@ -46,7 +52,13 @@ const SearchField = {
 
       <div class="search_inner row">
         <div @click="hide" class="button search_inner_button search_close_button"></div>
-        <input type="text" class="search_text_input grid_layout_element" id="searchInput">
+        <input
+          type="text"
+          class="search_text_input grid_layout_element"
+          id="searchInput"
+          @focus="userStartWriting"
+          @blur="userFinishWriting"
+        >
         <div class="button search_inner_button loupe_icon" @click="loupeclickevent"></div>
       </div>
     </div>
